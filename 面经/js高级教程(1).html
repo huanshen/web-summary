@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+	<script type="text/javascript" charset='UTF-8'>
+    //js字母区分大小写
+    // "use strict"
+
+    function sayJavascript(){
+		console.log("<\/script>");//此处必须使用转义符
+	}
+	//数据类型 undefined、null、number、boolean、string、object
+	//undefined表示一个特殊的undefined值；null表示一个空对象指针
+	var a=undefined;
+	if (a) {
+		console.log(true);
+	}
+	else{
+		console.log(false);//进入
+	}
+    console.log(undefined==null);//true
+    console.log(undefined===null);//false    
+	console.log(NaN==NaN);//false
+	console.log(Infinity===Infinity);//true
+
+
+	//typeof均小写，是操作符而不是函数，括号可加也可不加。检验结果 undefined、number、boolean、string、object、function
+	console.log(typeof Infinity);//"number"
+	console.log(typeof NaN);//"number"
+    console.log(typeof null);//"object"
+    console.log(typeof(""));//"string"
+    console.log(typeof(sayJavascript));//"function"
+
+    var a=0.1;
+    var b=0.2;
+    console.log(a+b==0.3);//false;浮点数计算精度不够
+    
+    console.log(isFinite(3));//true 
+    console.log(isFinite(Infinity));//false
+    console.log(isNaN(NaN));//true
+    console.log(isNaN(3));//false
+
+    //数字转化方法  Number() parseInt() parseFloat() toFixed()
+
+	var num0=2;
+	var num1=20;
+	var num2=num0-- + num1;//22
+	var num3=num0+ num1;//21
+	console.log(num2,num3);
+
+	var oldValue=-64;//负数以其二进制补码形式表示
+	console.log(oldValue>>5);//有符号右移 -2  
+	console.log(oldValue>>>5);//无符号右移 134217726  
+
+    console.log('5'==5);//true
+    console.log('5'===5);//false
+
+    function fn(str){
+    	return str;
+    }
+    function fn(){
+    	return 1;
+    }
+    console.log(fn(2));//返回1,es(js)没有函数重载，因为默认都是传进一个数组
+
+	//typeof用于检验直接类型的值，instanceof用于检验引用类型的值
+	var reg=/^s/;
+	console.log(reg instanceof RegExp);//true
+	console.log(fn instanceof Function);//true
+	console.log({} instanceof Object);//true
+	console.log([] instanceof Array);//true
+
+    var date=new Date();
+    console.log(date.toDateString());//Sat Apr 01 2017
+    console.log(date.toTimeString());//16:54:44 GMT+0800 (中国标准时间)
+    console.log(date.toLocaleDateString());//2017/4/1
+    console.log(date.toLocaleTimeString());//下午4:54:44
+    console.log(date.toUTCString());//Sat, 01 Apr 2017 08:54:44 GMT
+      
+    window.color='red';
+    var o={
+		color:'blue'
+    };
+
+    function sayColor(){
+    	console.log(this.color);
+    }
+    var objectSayColor=sayColor.bind(o);
+    objectSayColor();//'blue'
+    sayColor();//'red'
+
+    var arr=[1,2,3];
+    console.log(Math.max(arr.toString()));//NaN
+    console.log(Math.max(1,2,3));//3
+    console.log(arr.reduce(function(x,y){//求数组最大值
+       if (x>y) {
+            return x;
+       }
+       else{
+	       	return y;
+       }
+    }));
+
+    for(var i in o){//1、for-in 对对象元素进行遍历 2、Object.keys遍历  3、getPropertyNames(包括不可枚举属性)
+		console.log(o[i]);//'blue'
+    }
+
+    //程序设计，原型模式
+    function Person(){
+    	Person.prototype.name='x';
+    	Person.prototype.color=['red','blue']
+    }
+    var Person1=new Person();
+    var Person2=new Person();
+    Person1.color.push('yellow');
+
+	console.log(Person2.color);
+	console.log(Person1.name===Person2.name);
+	console.log(Person1.color===Person2.color);
+
+
+    //原型继承 缺点：引用
+    function SuperType1(){
+    	this.color=['red','blue']
+    }
+
+    function SubType1(){
+    }
+
+    SubType1.prototype=new SuperType1();
+  
+    var t1=new SubType1();
+    t1.color.push('black');
+    console.log(t1.color);//['red','blue','black']
+
+    var t2=new SubType1();
+    console.log(t2.color);//['red','blue','black']
+    
+
+    //组合式继承 缺点：至少调用两次构造函数
+    function SuperType2(name){
+    	this.name=name,
+    	this.color=['red','blue']
+    }
+    SuperType2.prototype.sayName = function() {
+    	return this.name;
+    };
+    function SubType2(name,age){
+       SuperType2.call(this,name);//第二次调用构造函数
+       this.age=age;
+    }
+    SubType2.prototype=new SuperType2();//第一次调用构造函数
+    SubType2.prototype.constructor=SubType2;
+    SubType2.prototype.sayAge=function(){
+    	return this.age;
+    }
+    var t1=new SubType2();
+    t1.color.push('yellow');
+    console.log(t1.color);//['red','blue','yellow']
+    var t2=new SubType2();
+    t2.color.push('black');
+    console.log(t2.color);//['red','blue','black']
+
+    //寄生组合式继承
+    function SuperType3(name){
+    	this.name=name,
+    	this.color=['red','blue']
+    }
+    SuperType3.prototype.sayName = function() {
+    	return this.name;
+    };
+    function SubType3(name,age){
+        SuperType3.call(this,name);
+        this.age=age;
+    }
+    //此处不同，只需要一个创建对象的函数
+    //SubType.prototype=Object(SuperType3.prototype);
+    SubType3.prototype=Object.create(SuperType3.prototype);
+
+    SubType3.prototype.constructor=SubType3;
+    SubType3.prototype.sayAge=function(){
+    	return this.age;
+    }
+    var t1=new SubType3();
+    t1.color.push('yellow');
+    console.log(t1.color);//['red','blue','yellow']
+    var t2=new SubType3();
+    t2.color.push('black');
+    console.log(t2.color);//['red','blue','black']
+
+   var div=document.createElement("div");
+   document.body.appendChild(div);
+
+
+</script>
+</body>
+</html>

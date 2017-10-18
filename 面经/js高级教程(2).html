@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<input id="btn" type="button" value='btn' name="">
+	<form>
+		<input type="text" name="name" autofocus required>
+		<input type="radio" name="1">
+		<input type="radio" name="1">
+		<input type="checkBox" name="2">
+		<input type="checkBox" name="2">
+		<input type="submit" name="submit" value="提交">
+		<input type="reset" name="" value="重置">
+		<input type="email" name="">
+		<input type="url" name="">
+		<input type="date" name="">
+		<input type="month" name="">
+		<input type="week" name="">
+		<input type="time" name="">
+		<input type="range" name="">
+		<input type="number" name="" min='0' max='10' step="5">
+	</form>
+</body>
+<script type="text/javascript">
+    //"use strict"
+    var btn=document.getElementById("btn");
+	// btn.onclick=function click1() {
+	// 	alert(this.id);
+	// }
+	btn.addEventListener('click',function(){
+		alert(this.id);
+		event.stopPropagation();//取消事件进一步捕获或冒泡，bodyClick事件不执行
+	},false);
+	btn.addEventListener('click',function(){
+		alert(this.id+1);
+	},false);
+
+	//检测是否支持某个属性
+	var isSupport=document.implementation.hasFeature('HTMLEvents',"2.0");
+	console.log(isSupport);
+
+	btn.addEventListener('mouseover',function(){
+		console.log("进入");
+	},false);
+	btn.addEventListener('mouseout',function(){
+		console.log("出去");
+	},false);
+
+	var form=document.forms[0];
+	form.addEventListener('submit',function(event){
+		console.log('提交');
+		event.preventDefault();
+		//最好在一次提交后禁用按钮
+		form.elements["submit"].disabled=true;
+	})
+	form.addEventListener('reset',function(event){
+		console.log('重置');
+	})
+
+	var arr=[1,2,3];
+	for (var i in arr) {
+		console.log(arr[i]);
+		if (arr[i]==2) {break;}
+	}
+	// 对象有属性__proto__与prototype区别
+	/* 1.对象有属性__proto__,指向该对象的构造函数的原型对象（.constructor.prototype）。
+	   2.方法除了有属性__proto__,还有属性prototype，prototype指向该
+	方法的原型对象。*/
+
+</script>
+</html>
