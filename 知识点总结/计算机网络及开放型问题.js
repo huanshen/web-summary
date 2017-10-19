@@ -253,8 +253,13 @@
           e=e||event;
           alert(e.data);
        }
-    4）图片ping：只能监听是否响应而已，可以用来追踪广告点击
-
+    4）CROS跨域
+       Access-Control-Allow-Origin:*;
+       Access-Control-Request-Method:xx;
+       Access-Control-Expose-Header:xx;
+    5）代理服务器向服务器发送请求实现跨域
+    6）图片ping：只能监听是否响应而已，可以用来追踪广告点击
+     
 18、http请求头有哪些,说说看你了解哪些
     1）通用首部字段：Cache-Control 控制缓存行为  connection控制管理连接
     2）请求首部字段：Accept-Econding 优先内容编码  if-Modified-Since 比较资源更新时间  Range实体字节范围要求  User-Agent 客户端信息
